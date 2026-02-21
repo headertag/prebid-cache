@@ -20,3 +20,5 @@ prebid-cache
 *~
 *.swp
 *.swo
+
+secrets.sh

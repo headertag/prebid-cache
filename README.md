@@ -1,5 +1,7 @@
 # Prebid Cache
 
+## Note: Modified to run in a container via Google Cloud Run and leverage Upstash Redis both which start with free options
+
 This application stores short-term data for use in Prebid Server and Prebid.js, primarily targeting video, native, and AMP formats.
 
 ## Installation

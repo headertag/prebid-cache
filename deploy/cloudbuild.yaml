@@ -1,0 +1,12 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '--build-arg'
+      - 'TEST=false'
+      - '-t'
+      - '$_IMAGE'
+      - '.'
+images:
+  - '$_IMAGE'
+timeout: 600s

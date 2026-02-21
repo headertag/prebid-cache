@@ -14,7 +14,7 @@ ENV GOPROXY="https://proxy.golang.org"
 RUN apt-get update && \
     apt-get install -y --no-install-recommends git && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-ENV CGO_ENABLED 0
+ENV CGO_ENABLED=0
 COPY ./ ./
 RUN go mod vendor
 RUN go mod tidy
@@ -31,7 +31,8 @@ WORKDIR /usr/local/bin/
 COPY --from=build /app/prebid-cache/prebid-cache .
 RUN chmod a+xr prebid-cache
 COPY --from=build /app/prebid-cache/config.yaml .
-RUN chmod a+r config.yaml
+COPY --from=build /app/prebid-cache/deploy/config-cloudrun.yaml .
+RUN chmod a+r config.yaml config-cloudrun.yaml
 RUN addgroup --system --gid 2001 prebidgroup && adduser --system --uid 1001 --ingroup prebidgroup prebid
 USER prebid
 EXPOSE 2424

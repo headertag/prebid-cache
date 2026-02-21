@@ -1,0 +1,27 @@
+port: 2424
+admin_port: 2525
+log:
+  level: "info"
+rate_limiter:
+  enabled: true
+  num_requests: 100
+request_limits:
+  allow_setting_keys: false
+  max_size_bytes: 10240
+  max_num_values: 10
+  max_ttl_seconds: 10800 # 3 hours
+request_logging:
+  referer_sampling_rate: 0.0
+backend:
+  type: "redis"
+  # Redis credentials are set via environment variables:
+  #   PBC_BACKEND_REDIS_HOST
+  #   PBC_BACKEND_REDIS_PORT
+  #   PBC_BACKEND_REDIS_PASSWORD
+  #   PBC_BACKEND_REDIS_TLS_ENABLED
+compression:
+  type: "snappy"
+metrics:
+  type: "none"
+routes:
+  allow_public_write: true
