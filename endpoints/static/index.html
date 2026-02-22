@@ -37,6 +37,7 @@
             line-height: 1.1;
             color: var(--text);
         }
+        .logo .logo-part { display: inline-block; }
         .logo .dot-video { color: var(--accent); }
         .tagline {
             color: var(--text-muted);
@@ -63,6 +64,27 @@
         p { margin-bottom: 1rem; }
         a { color: var(--accent); text-decoration: none; }
         a:hover { text-decoration: underline; }
+        .code-block {
+            position: relative;
+        }
+        .code-block .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-family: inherit;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+        .code-block:hover .copy-btn { opacity: 1; }
+        .code-block .copy-btn:hover { color: var(--text); border-color: var(--text-muted); }
+        .code-block .copy-btn.copied { color: var(--green); border-color: var(--green); }
         pre {
             background: var(--code-bg);
             border: 1px solid var(--border);
@@ -122,7 +144,7 @@
 <body>
 <div class="container">
     <header>
-        <div class="logo">&lt;prebid<span class="dot-video">.video</span>&gt;</div>
+        <div class="logo"><span class="logo-part">&lt;prebid</span><span class="logo-part"><span class="dot-video">.video</span>&gt;</span></div>
         <p class="tagline">A public, serverless Prebid Cache instance on Google Cloud Run</p>
         <span class="badge">Scales to zero &bull; Pay per request &bull; ~$0-15/mo</span>
     </header>
@@ -143,7 +165,7 @@
         </div>
         <div class="spec-card">
             <div class="label">Max Size</div>
-            <div class="value">10 KB</div>
+            <div class="value">100 KB</div>
         </div>
     </div>
 
@@ -215,7 +237,7 @@ gcloud artifacts repositories create prebid-cache \
 
     <h3>4. Build &amp; Deploy</h3>
 <pre><code># Clone the repo
-git clone https://github.com/prebid/prebid-cache.git
+git clone https://github.com/headertag/prebid-cache.git
 cd prebid-cache
 
 # Build remotely with Cloud Build and deploy to Cloud Run
@@ -270,15 +292,38 @@ curl https://YOUR_CLOUD_RUN_URL/cache?uuid=RETURNED_UUID</code></pre>
 
     <h2>Links</h2>
     <ul>
-        <li><a href="https://github.com/prebid/prebid-cache">GitHub Repository</a></li>
+	<li><a href="https://prebid.org/">Visit the Prebid.org Website</a></li>
+        <li><a href="https://github.com/headertag/prebid-cache">GitHub Repository</a></li>
         <li><a href="https://docs.prebid.org/prebid-server/features/pbs-caching.html">Prebid Cache Documentation</a></li>
         <li><a href="https://cloud.google.com/run/docs">Google Cloud Run Docs</a></li>
         <li><a href="https://upstash.com/docs/redis/overall/getstarted">Upstash Redis Docs</a></li>
     </ul>
 
     <footer>
-        <p>Powered by <a href="https://github.com/prebid/prebid-cache">Prebid Cache</a> &bull; Deployed on <a href="https://cloud.google.com/run">Google Cloud Run</a></p>
+        <p>Powered by <a href="https://github.com/headertag/prebid-cache">Prebid Cache</a> &bull; Deployed on <a href="https://cloud.google.com/run">Google Cloud Run</a></p>
     </footer>
 </div>
+<script>
+document.querySelectorAll('pre').forEach(function(pre) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'code-block';
+    pre.parentNode.insertBefore(wrapper, pre);
+    wrapper.appendChild(pre);
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', function() {
+        navigator.clipboard.writeText(pre.textContent).then(function() {
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(function() {
+                btn.textContent = 'Copy';
+                btn.classList.remove('copied');
+            }, 2000);
+        });
+    });
+    wrapper.appendChild(btn);
+});
+</script>
 </body>
 </html>
